@@ -83,15 +83,21 @@ class BinarySearchTree():
 if __name__ == '__main__':
     import random
     import subprocess
+    import timeit
 
-    print "imported"
     tree = BinarySearchTree()
-    tree.insert(20)
-    tree.insert(30)
-    tree.insert(10)
-    tree.insert(15)
-    tree.insert(40)
-    print "tree constructed"
+    nums = [i for i in range(101)]
+    for i in nums:
+            tree.insert(i)
+
+    def hard_find():
+        tree.contains(100)
+
+    def easy_find():
+        tree.contains(1)
+
+    print(timeit.timeit('hard_find()', setup='from __main__ import hard_find'))
+    print(timeit.timeit('easy_find()', setup='from __main__ import easy_find'))
 
     dot_graph = tree.get_dot()
     t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
