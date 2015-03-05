@@ -27,36 +27,41 @@ class Node(object):
             yield "\t%s -> null%s;" % (self.val, r)
 
 
-class BinarySearchTree():
+class BinarySearchTree(object):
 
     def __init__(self):
         self.root = None
         self.treesize = set()
 
     def insert(self, val):
+        """insert new unique value into tree"""
         self.treesize.add(val)
         if self.root is None:
             self.root = Node(val)
         else:
-            self.insert_node(self.root, val)
+            self._insert(self.root, val)
 
-    def insert_node(self, node, val):
+    def _insert(self, node, val):
         if val <= node.val:
             if node.left:
-                self.insert_node(node.left, val)
+                self._insert(node.left, val)
             else:
                 node.left = Node(val)
         elif val > node.val:
             if node.right:
-                self.insert_node(node.right, val)
+                self._insert(node.right, val)
             else:
                 node.right = Node(val)
 
     def depth(self):
+        """return maximum depth of tree"""
         return self._depth_helper(self.root)
 
     def balance(self):
-        return self._depth_helper(self.root.right) - self._depth_helper(self.root.left)
+        """return integer indicating level of balance based on depth of
+        each side"""
+        return self._depth_helper(self.root.right) -\
+            self._depth_helper(self.root.left)
 
     def _depth_helper(self, root, depth=0):
         if root is None:
@@ -65,9 +70,11 @@ class BinarySearchTree():
                    self._depth_helper(root.right, depth + 1))
 
     def size(self):
+        """return number of nodes in tree"""
         return len(self.treesize)
 
     def contains(self, val):
+        """return True if value found in tree, False if not"""
         return val in self.treesize
 
     def get_dot(self):
@@ -101,6 +108,4 @@ if __name__ == '__main__':
 
     dot_graph = tree.get_dot()
     t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
-    print "starting"
     t.communicate(dot_graph)
-    print "communicated"
