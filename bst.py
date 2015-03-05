@@ -7,6 +7,25 @@ class Node(object):
         self.left = None
         self.right = None
 
+    def _get_dot(self):
+        """recursively prepare a dot graph entry for this node."""
+        if self.left is not None:
+            yield "\t%s -> %s;" % (self.val, self.left.val)
+            for i in self.left._get_dot():
+                yield i
+        elif self.right is not None:
+            r = random.randint(0, 1e9)
+            yield "\tnull%s [shape=point];" % r
+            yield "\t%s -> null%s;" % (self.val, r)
+        if self.right is not None:
+            yield "\t%s -> %s;" % (self.val, self.right.val)
+            for i in self.right._get_dot():
+                yield i
+        elif self.left is not None:
+            r = random.randint(0, 1e9)
+            yield "\tnull%s [shape=point];" % r
+            yield "\t%s -> null%s;" % (self.val, r)
+
 
 class BinarySearchTree():
 
@@ -53,44 +72,29 @@ class BinarySearchTree():
 
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
-        return "digraph G{\n%s}" % ("" if self.val is None else (
+        return "digraph G{\n%s}" % ("" if self.root.val is None else (
             "\t%s;\n%s\n" % (
-                self.val,
-                "\n".join(self._get_dot())
+                self.root.val,
+                "\n".join(self.root._get_dot())
             )
         ))
 
-    def _get_dot(self):
-        """recursively prepare a dot graph entry for this node."""
-        if self.left is not None:
-            yield "\t%s -> %s;" % (self.val, self.left.val)
-            for i in self.left._get_dot():
-                yield i
-        elif self.right is not None:
-            r = random.randint(0, 1e9)
-            yield "\tnull%s [shape=point];" % r
-            yield "\t%s -> null%s;" % (self.val, r)
-        if self.right is not None:
-            yield "\t%s -> %s;" % (self.val, self.right.val)
-            for i in self.right._get_dot():
-                yield i
-        elif self.left is not None:
-            r = random.randint(0, 1e9)
-            yield "\tnull%s [shape=point];" % r
-            yield "\t%s -> null%s;" % (self.val, r)
 
-
-if '__name__' == '__main__':
+if __name__ == '__main__':
     import random
     import subprocess
 
+    print "imported"
     tree = BinarySearchTree()
     tree.insert(20)
     tree.insert(30)
     tree.insert(10)
     tree.insert(15)
     tree.insert(40)
+    print "tree constructed"
 
     dot_graph = tree.get_dot()
     t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
+    print "starting"
     t.communicate(dot_graph)
+    print "communicated"
