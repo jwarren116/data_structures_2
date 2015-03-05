@@ -31,7 +31,7 @@ def test_balance():
         b.insert(n)
     assert b.balance() == 0
     b.insert(90)
-    assert b.balance() == -1
+    assert b.balance() == 1
 
 
 def test_depth():
