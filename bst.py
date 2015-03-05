@@ -31,13 +31,28 @@ class BinarySearchTree():
                 node.right = Node(val)
 
     def depth(self):
-        return self.bst_maxdepth(self.root)
+        return self._depth_helper(self.root)
 
-    def bst_maxdepth(self, root, depth=0):
+    def _depth_helper(self, root, depth=0):
         if root is None:
             return depth
-        return max(self.bst_maxdepth(root.left, depth + 1),
-                   self.bst_maxdepth(root.right, depth + 1))
+        return max(self._depth_helper(root.left, depth + 1),
+                   self._depth_helper(root.right, depth + 1))
+
+    def balance(self):
+        return self._balance_helper_left(self.root.left) - self._balance_helper_right(self.root.right)
+
+    def _balance_helper_right(self, root, depth=0):
+        if root is None:
+            return depth
+        return max(self._balance_helper_right(root.left, depth + 1),
+                   self._balance_helper_right(root.right, depth + 1))
+
+    def _balance_helper_left(self, root, depth=0):
+        if root is None:
+            return depth
+        return max(self._balance_helper_left(root.left, depth + 1),
+                   self._balance_helper_left(root.right, depth + 1))
 
     def size(self):
         return len(self.treesize)
