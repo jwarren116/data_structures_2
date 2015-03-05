@@ -56,7 +56,7 @@ class BinarySearchTree():
         return self._depth_helper(self.root)
 
     def balance(self):
-        return self._depth_helper(self.root.left) - self._depth_helper(self.root.right)
+        return self._depth_helper(self.root.right) - self._depth_helper(self.root.left)
 
     def _depth_helper(self, root, depth=0):
         if root is None:
