@@ -15,6 +15,7 @@ b.insert(.5)
 b.insert(15)
 b.insert(20)
 b.insert(30)
+b.insert(31)
 
 print "size: {}".format(b.treesize)
 # print b.root.val
