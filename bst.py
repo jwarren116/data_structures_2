@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from collections import deque
 
 
 class Node(object):
@@ -76,6 +77,17 @@ class BinarySearchTree(object):
     def contains(self, val):
         """return True if value found in tree, False if not"""
         return val in self.treesize
+
+    def breadth_first(self):
+        queue = deque()
+        queue.append(self.root)
+        while queue:
+            node = queue.popleft()
+            yield node.val
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
 
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
