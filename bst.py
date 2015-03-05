@@ -43,27 +43,19 @@ class BinarySearchTree():
                    self._depth_helper(root.right, depth + 1))
 
     def balance(self):
-        return self._balance_helper_left(self.root.left) - self._balance_helper_right(self.root.right)
+        return self._balance_helper(self.root.left) - self._balance_helper(self.root.right)
 
-    def _balance_helper_right(self, root, depth=0):
+    def _balance_helper(self, root, depth=0):
         if root is None:
             return depth
-        return max(self._balance_helper_right(root.left, depth + 1),
-                   self._balance_helper_right(root.right, depth + 1))
-
-    def _balance_helper_left(self, root, depth=0):
-        if root is None:
-            return depth
-        return max(self._balance_helper_left(root.left, depth + 1),
-                   self._balance_helper_left(root.right, depth + 1))
+        return max(self._balance_helper(root.left, depth + 1),
+                   self._balance_helper(root.right, depth + 1))
 
     def size(self):
         return len(self.treesize)
 
     def contains(self, val):
         return val in self.treesize
-
-
 
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
