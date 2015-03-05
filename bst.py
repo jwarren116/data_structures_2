@@ -58,10 +58,14 @@ class BinarySearchTree(object):
         return self._depth_helper(self.root)
 
     def balance(self):
+<<<<<<< HEAD
         """return integer indicating level of balance based on depth of
         each side"""
         return self._depth_helper(self.root.right) -\
             self._depth_helper(self.root.left)
+=======
+        return self._depth_helper(self.root.right) - self._depth_helper(self.root.left)
+>>>>>>> 7a457c62c109d68868bb49af956ca51825d9433f
 
     def _depth_helper(self, root, depth=0):
         if root is None:
