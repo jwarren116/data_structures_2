@@ -36,20 +36,14 @@ class BinarySearchTree():
     def depth(self):
         return self._depth_helper(self.root)
 
+    def balance(self):
+        return self._depth_helper(self.root.left) - self._depth_helper(self.root.right)
+
     def _depth_helper(self, root, depth=0):
         if root is None:
             return depth
         return max(self._depth_helper(root.left, depth + 1),
                    self._depth_helper(root.right, depth + 1))
-
-    def balance(self):
-        return self._balance_helper(self.root.left) - self._balance_helper(self.root.right)
-
-    def _balance_helper(self, root, depth=0):
-        if root is None:
-            return depth
-        return max(self._balance_helper(root.left, depth + 1),
-                   self._balance_helper(root.right, depth + 1))
 
     def size(self):
         return len(self.treesize)
