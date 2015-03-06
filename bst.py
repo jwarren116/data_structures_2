@@ -89,6 +89,18 @@ class BinarySearchTree(object):
             if node.right:
                 queue.append(node.right)
 
+    def in_order(self):
+        return self._in_order(self.root)
+
+    def _in_order(self, node):
+        if not node:
+            return
+        for val in self._in_order(node.left):
+            yield val
+        yield node.val
+        for val in self._in_order(node.right):
+            yield val
+
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
         return "digraph G{\n%s}" % ("" if self.root.val is None else (
