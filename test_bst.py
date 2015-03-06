@@ -9,6 +9,9 @@ def test_insert_nodes():
     b = BinarySearchTree()
     for n in nodes:
         b.insert(n)
+    assert b.contains(5)
+    assert b.contains(43)
+    assert b.contains(2)
     assert b.size() == 9
 
 
@@ -31,7 +34,7 @@ def test_balance():
         b.insert(n)
     assert b.balance() == 0
     b.insert(90)
-    assert b.balance() == 1
+    assert b.balance() == -1
 
 
 def test_depth():
