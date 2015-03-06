@@ -43,7 +43,7 @@ class BinarySearchTree(object):
             self._insert(self.root, val)
 
     def _insert(self, node, val):
-        if val <= node.val:
+        if val < node.val:
             if node.left:
                 self._insert(node.left, val)
             else:
@@ -53,6 +53,8 @@ class BinarySearchTree(object):
                 self._insert(node.right, val)
             else:
                 node.right = Node(val)
+        else:
+            return 'Val already in tree'
 
     def depth(self):
         """return maximum depth of tree"""
@@ -61,8 +63,8 @@ class BinarySearchTree(object):
     def balance(self):
         """return integer indicating level of balance based on depth of
         each side"""
-        return self._depth_helper(self.root.right) -\
-            self._depth_helper(self.root.left)
+        help = self._depth_helper()
+        return help(self.root.right) - help(self.root.left)
 
     def _depth_helper(self, root, depth=0):
         if root is None:
