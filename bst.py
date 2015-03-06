@@ -101,6 +101,30 @@ class BinarySearchTree(object):
         for val in self._in_order(node.right):
             yield val
 
+    def pre_order(self):
+        return self._pre_order(self.root)
+
+    def _pre_order(self, node):
+        if not node:
+            return
+        yield node.val
+        for val in self._pre_order(node.left):
+            yield val
+        for val in self._pre_order(node.right):
+            yield val
+
+    def post_order(self):
+        return self._post_order(self.root)
+
+    def _post_order(self, node):
+        if not node:
+            return
+        for val in self._post_order(node.left):
+            yield val
+        for val in self._post_order(node.right):
+            yield val
+        yield node.val
+
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
         return "digraph G{\n%s}" % ("" if self.root.val is None else (
