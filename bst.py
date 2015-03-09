@@ -29,7 +29,7 @@ class Node(object):
 
 class BinarySearchTree(object):
 
-    def __init__(self, root=None, size=0):
+    def __init__(self, root=None):
         self.root = root
         self.treesize = set()
 
