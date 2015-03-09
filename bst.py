@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-from collections import deque
 
 
 class Node(object):
-    def __init__(self, value, left=None, right=None, parent=None):
+    def __init__(self, value, left=None, right=None):
         self.val = value
-        self.left = left
-        self.right = right
-        self.parent = parent
+        self.left = None
+        self.right = None
 
     def _get_dot(self):
         """recursively prepare a dot graph entry for this node."""
@@ -48,14 +46,12 @@ class BinarySearchTree(object):
             if node.left:
                 self._insert(node.left, val)
             else:
-                node.left = Node(val, parent=node)
+                node.left = Node(val)
         elif val > node.val:
             if node.right:
                 self._insert(node.right, val)
             else:
-                node.right = Node(val, parent=node)
-        else:
-            return 'Val already in tree'
+                node.right = Node(val)
 
     def depth(self):
         """return maximum depth of tree"""
@@ -64,8 +60,9 @@ class BinarySearchTree(object):
     def balance(self):
         """return integer indicating level of balance based on depth of
         each side"""
-        help = self._depth_helper
-        return help(self.root.right) - help(self.root.left)
+        left = self._depth_helper(self.root.left)
+        right = self._depth_helper(self.root.right)
+        return left - right
 
     def _depth_helper(self, root, depth=0):
         if root is None:
