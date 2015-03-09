@@ -77,44 +77,48 @@ class BinarySearchTree(object):
         """return number of nodes in tree"""
         return len(self.treesize)
 
-    def contains(self, val):
-        """return True if value found in tree, False if not"""
-        return val in self.treesize
-
-    def _find_min(self, node):
-        current_node = node
-        while current_node.left:
-            current_node = current_node.left
-        return current_node
-
-    def _replace_node_in_parent(self, node, new_value=None):
-        if node.parent:
-            if node == self.parent.left:
-                self.parent.left = new_value
-            else:
-                self.parent.right = new_value
-        if new_value:
-            new_value.parent = node.parent
-
-    def delete(self, val):
-        return self._delete(val, self.root)
-
-    def _delete(self, val, node):
-        if val < node.val:
-            self._delete(val, node.left)
-        elif val > node.val:
-            self._delete(val, node.right)
+    def _contains(self, val, node):
+        if node is None or node.val == val:
+            return node
+        elif val < node.val:
+            return self._contains(val, node.left)
         else:
+            return self._contains(val, node.right)
+
+    def contains(self, val):
+        return bool(self._contains(val, self.root))
+
+    def _find_replacement(self, node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
+    def _remove_node(self, node, replacement_node=None):
+        if node.parent:
+            if node.parent.left == node:
+                node.parent.left = node.left
+            else:
+                node.parent.right = node.right
+        if replacement_node:
+            replacement_node.parent = node.parent
+
+    def delete(self, target):
+        self._delete(target, self.root)
+
+    def _delete(self, target, start):
+        node = self._contains(target, start)
+        if node:
             if node.left and node.right:
-                successor = self._find_min(node.left)
+                successor = self._find_replacement(node.right)
                 node.val = successor.val
                 self._delete(successor.val, successor)
             elif node.left:
-                self._replace_node_in_parent(node, node.left)
+                self._remove_node(node, node.left)
             elif node.right:
-                self._replace_node_in_parent(node, node.right)
+                self._remove_node(node, node.right)
             else:
-                self._replace_node_in_parent(node, None)
+                self._remove_node(node)
 
     def breadth_first(self):
         queue = deque()
@@ -215,7 +219,7 @@ if __name__ == '__main__':
         print(timeit.timeit('easy_find()',
                             setup='from __main__ import easy_find'))
 
-        easy_tree.delete(17)
+        easy_tree.delete(6)
         dot_graph = easy_tree.get_dot()
         t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
         t.communicate(dot_graph)
