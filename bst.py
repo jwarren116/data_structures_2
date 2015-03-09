@@ -80,6 +80,38 @@ class BinarySearchTree(object):
         """return True if value found in tree, False if not"""
         return val in self.treesize
 
+    def remove(self, val):
+        """Remove a node from the BST if it is present"""
+        if val not in self.treesize:
+            raise ValueError('Node not in tree')
+        else:
+            self._remove(val, self.root)
+
+    def _remove(self, val, parent):
+        if val < parent.val:
+            if parent.left.val == val:
+                self._replace_node(parent.left, parent)
+            self._remove(val, parent.left)
+        if val > parent.val:
+            if parent.right.val == val:
+                self._replace_node(parent.right, parent)
+            self._remove(val, parent.right)
+
+    def _replace_node(self, node, parent):
+        if parent.left == node:
+            node = left_node
+        if parent.right == node:
+            node. right_node
+        if not node.left and not node.right:
+            node = None
+        elif node.left and not node.right:
+            parent.left = node.left
+        elif node.right and not node.left:
+            parent.left = node.right
+        else:
+
+
+
     def breadth_first(self):
         queue = deque()
         queue.append(self.root)
