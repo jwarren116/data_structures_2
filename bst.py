@@ -87,31 +87,6 @@ class BinarySearchTree(object):
         else:
             self._remove(val, self.root)
 
-    def _remove(self, val, parent):
-        if val < parent.val:
-            if parent.left.val == val:
-                self._replace_node(parent.left, parent)
-            self._remove(val, parent.left)
-        if val > parent.val:
-            if parent.right.val == val:
-                self._replace_node(parent.right, parent)
-            self._remove(val, parent.right)
-
-    def _replace_node(self, node, parent):
-        if parent.left == node:
-            node = left_node
-        if parent.right == node:
-            node. right_node
-        if not node.left and not node.right:
-            node = None
-        elif node.left and not node.right:
-            parent.left = node.left
-        elif node.right and not node.left:
-            parent.left = node.right
-        else:
-
-
-
     def breadth_first(self):
         queue = deque()
         queue.append(self.root)
@@ -174,20 +149,43 @@ if __name__ == '__main__':
     import subprocess
     import timeit
 
-    tree = BinarySearchTree()
-    nums = [i for i in range(101)]
-    for i in nums:
-            tree.insert(i)
+    nums = [list(range(0, 251))]
 
-    def hard_find():
-        tree.contains(100)
+    for num in nums:
 
-    def easy_find():
-        tree.contains(1)
+        def best_tree(num):
+            '''call the recursive method to form the most balanced tree'''
+            return best_case(num, 0, len(num) - 1)
 
-    print(timeit.timeit('hard_find()', setup='from __main__ import hard_find'))
-    print(timeit.timeit('easy_find()', setup='from __main__ import easy_find'))
+        def best_case(num, begin, end):
+            if begin > end:
+                return None
+            mid = (begin + end) // 2
+            root = Node(num[mid])
+            root.left = best_case(num, begin, mid - 1)
+            root.right = best_case(num, mid + 1, end)
+            print root.val
+            return root
 
-    dot_graph = tree.get_dot()
-    t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
-    t.communicate(dot_graph)
+        easy_tree = BinarySearchTree(best_tree(num))
+        hard_tree = BinarySearchTree()
+
+        for ints in num:
+            hard_tree.insert(ints)
+
+        def hard_find():
+            '''find the highest value in the least balanced tree'''
+            return hard_tree.contains(num[-1])
+
+        def easy_find():
+            '''find the highest value in the most balanced tree'''
+            return easy_tree.contains(num[-1])
+
+        print(timeit.timeit('hard_find()',
+                            setup='from __main__ import hard_find'))
+        print(timeit.timeit('easy_find()',
+                            setup='from __main__ import easy_find'))
+
+        dot_graph = hard_tree.get_dot()
+        t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
+        t.communicate(dot_graph)
