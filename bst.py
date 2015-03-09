@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-from collections import deque
 
 
 class Node(object):
-    def __init__(self, value, left=None, right=None, parent=None):
+    def __init__(self, value, left=None, right=None):
         self.val = value
-        self.left = left
-        self.right = right
-        self.parent = parent
+        self.left = None
+        self.right = None
 
     def _get_dot(self):
         """recursively prepare a dot graph entry for this node."""
@@ -31,8 +29,8 @@ class Node(object):
 
 class BinarySearchTree(object):
 
-    def __init__(self):
-        self.root = None
+    def __init__(self, root=None):
+        self.root = root
         self.treesize = set()
 
     def insert(self, val):
@@ -48,14 +46,12 @@ class BinarySearchTree(object):
             if node.left:
                 self._insert(node.left, val)
             else:
-                node.left = Node(val, parent=node)
+                node.left = Node(val)
         elif val > node.val:
             if node.right:
                 self._insert(node.right, val)
             else:
-                node.right = Node(val, parent=node)
-        else:
-            return 'Val already in tree'
+                node.right = Node(val)
 
     def depth(self):
         """return maximum depth of tree"""
@@ -64,8 +60,9 @@ class BinarySearchTree(object):
     def balance(self):
         """return integer indicating level of balance based on depth of
         each side"""
-        help = self._depth_helper
-        return help(self.root.right) - help(self.root.left)
+        left = self._depth_helper(self.root.left)
+        right = self._depth_helper(self.root.right)
+        return left - right
 
     def _depth_helper(self, root, depth=0):
         if root is None:
@@ -80,85 +77,6 @@ class BinarySearchTree(object):
     def contains(self, val):
         """return True if value found in tree, False if not"""
         return val in self.treesize
-
-    def _find_min(self):
-        current_node = self
-        while current_node.left:
-            current_node = current_node.left
-        return current_node
-
-    def _replace_node_in_parent(self, new_value=None):
-        if self.parent:
-            if self == self.parent.left:
-                self.parent.left = new_value
-            else:
-                self.parent.right = new_value
-        if new_value:
-            new_value.parent = self.parent
-
-    def remove(self, val):
-        if val < self.val:
-            self.left.remove(val)
-        elif val > self.val:
-            self.right.remove(val)
-        else:
-            if self.left and self.right:
-                successor = self.right._find_min()
-                self.val = successor.val
-                successor.remove(successor.val)
-            elif self.left:
-                self._replace_node_in_parent(self.left)
-            elif self.right:
-                self._replace_node_in_parent(self.right)
-            else:
-                self._replace_node_in_parent(None)
-
-    def breadth_first(self):
-        queue = deque()
-        queue.append(self.root)
-        while queue:
-            node = queue.popleft()
-            yield node.val
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-
-    def in_order(self):
-        return self._in_order(self.root)
-
-    def _in_order(self, node):
-        if not node:
-            return
-        for val in self._in_order(node.left):
-            yield val
-        yield node.val
-        for val in self._in_order(node.right):
-            yield val
-
-    def pre_order(self):
-        return self._pre_order(self.root)
-
-    def _pre_order(self, node):
-        if not node:
-            return
-        yield node.val
-        for val in self._pre_order(node.left):
-            yield val
-        for val in self._pre_order(node.right):
-            yield val
-
-    def post_order(self):
-        return self._post_order(self.root)
-
-    def _post_order(self, node):
-        if not node:
-            return
-        for val in self._post_order(node.left):
-            yield val
-        for val in self._post_order(node.right):
-            yield val
-        yield node.val
 
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
