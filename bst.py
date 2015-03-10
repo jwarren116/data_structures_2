@@ -81,8 +81,8 @@ class BinarySearchTree(object):
 
     def _find_min(self, node):
         current_node = node
-        while current_node.left:
-            current_node = current_node.left
+        while current_node.right:
+            current_node = current_node.right
         return current_node
 
     def _replace_node_in_parent(self, node, new_value=None):
@@ -94,20 +94,24 @@ class BinarySearchTree(object):
         if new_value:
             new_value.parent = node.parent
 
-    def delete(self, target):
-        self._delete(target, self.root)
+    def delete(self, val):
+        self.treesize.remove(val)
+        self._delete(val, self.root)
 
-    def _delete(self, target, start):
-        node = self._contains(target, start)
-        if node:
+    def _delete(self, val, node):
+        if val < node.val:
+            self._delete(val, node.left)
+        elif val > node.val:
+            self._delete(val, node.right)
+        else:
             if node.left and node.right:
-                successor = self._find_min(node.right)
+                successor = self._find_min(node.left)
                 node.val = successor.val
                 self._delete(successor.val, successor)
             elif node.left:
-                self._delete(node, node.left)
+                self._replace_node_in_parent(node, node.left)
             elif node.right:
-                self._delete(node, node.right)
+                self._replace_node_in_parent(node, node.right)
             else:
                 self._replace_node_in_parent(node)
 
@@ -192,23 +196,16 @@ if __name__ == '__main__':
             return root
 
         easy_tree = BinarySearchTree()
-        easy_tree.insert(10)
         easy_tree.insert(5)
-        easy_tree.insert(15)
-        easy_tree.insert(7)
-        easy_tree.insert(13)
+        easy_tree.insert(4)
         easy_tree.insert(8)
-        easy_tree.insert(12)
-        easy_tree.insert(6)
-        easy_tree.insert(14)
         easy_tree.insert(3)
-        easy_tree.insert(19)
-        easy_tree.insert(11)
-        easy_tree.insert(13.5)
-        easy_tree.insert(14.5)
-
-        easy_tree.delete(13)
-
+        easy_tree.insert(43)
+        easy_tree.insert(22)
+        easy_tree.insert(7)
+        easy_tree.insert(74)
+        easy_tree.insert(2)
+        
         # hard_tree = BinarySearchTree()
 
         # for ints in num:
