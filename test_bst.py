@@ -117,3 +117,74 @@ def test_breadth_first():
         assert actual.next() == val
     with pytest.raises(StopIteration):
         actual.next()
+
+
+def test_delete_root():
+    """Test the in order traversal method of a BST"""
+    assertions = [2, 3, 4, 7, 8, 22, 43, 74]
+    b = BinarySearchTree()
+    for n in nodes:
+        b.insert(n)
+    b.delete(5)
+    actual = b.in_order()
+    for val in assertions:
+        assert actual.next() == val
+    with pytest.raises(StopIteration):
+        actual.next()
+
+
+def test_delete_with_no_children():
+    """Test the in order traversal method of a BST"""
+    assertions = [2, 3, 4, 5, 7, 8, 43, 74]
+    b = BinarySearchTree()
+    for n in nodes:
+        b.insert(n)
+    b.delete(22)
+    actual = b.in_order()
+    for val in assertions:
+        assert actual.next() == val
+    with pytest.raises(StopIteration):
+        actual.next()
+
+
+def test_delete_with_left_child():
+    """Test the in order traversal method of a BST"""
+    assertions = [2, 4, 5, 7, 8, 22, 43, 74]
+    b = BinarySearchTree()
+    for n in nodes:
+        b.insert(n)
+    b.delete(3)
+    actual = b.in_order()
+    for val in assertions:
+        assert actual.next() == val
+    with pytest.raises(StopIteration):
+        actual.next()
+
+
+def test_delete_with_two_children():
+    """Test the in order traversal method of a BST"""
+    assertions = [2, 3, 4, 5, 7, 8, 22, 74]
+    b = BinarySearchTree()
+    for n in nodes:
+        b.insert(n)
+    b.delete(43)
+    actual = b.in_order()
+    for val in assertions:
+        assert actual.next() == val
+    with pytest.raises(StopIteration):
+        actual.next()
+
+
+def test_multiple_delete():
+    """Test the in order traversal method of a BST"""
+    assertions = [2, 3, 4, 5, 7, 22, 74]
+    b = BinarySearchTree()
+    for n in nodes:
+        b.insert(n)
+    b.delete(43)
+    b.delete(8)
+    actual = b.in_order()
+    for val in assertions:
+        assert actual.next() == val
+    with pytest.raises(StopIteration):
+        actual.next()
