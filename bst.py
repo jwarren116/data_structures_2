@@ -75,16 +75,9 @@ class BinarySearchTree(object):
         """return number of nodes in tree"""
         return len(self.treesize)
 
-    def _contains(self, val, node):
-        if node is None or node.val == val:
-            return node
-        elif val < node.val:
-            return self._contains(val, node.left)
-        else:
-            return self._contains(val, node.right)
-
     def contains(self, val):
-        return bool(self._contains(val, self.root))
+        """return True if value found in tree, False if not"""
+        return val in self.treesize
 
     def _find_min(self, node):
         current_node = node
