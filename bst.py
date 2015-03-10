@@ -75,14 +75,21 @@ class BinarySearchTree(object):
         """return number of nodes in tree"""
         return len(self.treesize)
 
+    def _contains(self, val, node):
+        if node is None or node.val == val:
+            return node
+        elif val < node.val:
+            return self._contains(val, node.left)
+        else:
+            return self._contains(val, node.right)
+
     def contains(self, val):
-        """return True if value found in tree, False if not"""
-        return val in self.treesize
+        return bool(self._contains(val, self.root))
 
     def _find_min(self, node):
         current_node = node
-        while current_node.right:
-            current_node = current_node.right
+        while current_node.left:
+            current_node = current_node.left
         return current_node
 
     def _replace_node_in_parent(self, node, new_value=None):
@@ -94,23 +101,20 @@ class BinarySearchTree(object):
         if new_value:
             new_value.parent = node.parent
 
-    def delete(self, val):
-        return self._delete(val, self.root)
+    def delete(self, target):
+        self._delete(target, self.root)
 
-    def _delete(self, val, node):
-        if val < node.val:
-            self._delete(val, node.left)
-        elif val > node.val:
-            self._delete(val, node.right)
-        else:
+    def _delete(self, target, start):
+        node = self._contains(target, start)
+        if node:
             if node.left and node.right:
-                successor = self._find_min(node.left)
+                successor = self._find_min(node.right)
                 node.val = successor.val
                 self._delete(successor.val, successor)
             elif node.left:
-                self._replace_node_in_parent(node, node.left)
+                self._delete(node, node.left)
             elif node.right:
-                self._replace_node_in_parent(node, node.right)
+                self._delete(node, node.right)
             else:
                 self._replace_node_in_parent(node)
 
@@ -194,22 +198,23 @@ if __name__ == '__main__':
             # print root.val
             return root
 
-        # easy_tree = BinarySearchTree()
-        # easy_tree.insert(10)
-        # easy_tree.insert(5)
-        # easy_tree.insert(15)
-        # easy_tree.insert(7)
-        # easy_tree.insert(13)
-        # easy_tree.insert(8)
-        # easy_tree.insert(12)
-        # easy_tree.insert(6)
-        # easy_tree.insert(14)
-        # easy_tree.insert(3)
-        # easy_tree.insert(19)
-        # easy_tree.insert(11)
+        easy_tree = BinarySearchTree()
+        easy_tree.insert(10)
+        easy_tree.insert(5)
+        easy_tree.insert(15)
+        easy_tree.insert(7)
+        easy_tree.insert(13)
+        easy_tree.insert(8)
+        easy_tree.insert(12)
+        easy_tree.insert(6)
+        easy_tree.insert(14)
+        easy_tree.insert(3)
+        easy_tree.insert(19)
+        easy_tree.insert(11)
+        easy_tree.insert(13.5)
+        easy_tree.insert(14.5)
 
-        # # easy_tree.delete(15)
-        # easy_tree.delete(13)
+        easy_tree.delete(13)
 
         # hard_tree = BinarySearchTree()
 
@@ -228,7 +233,6 @@ if __name__ == '__main__':
         #                     setup='from __main__ import hard_find'))
         # print(timeit.timeit('easy_find()',
         #                     setup='from __main__ import easy_find'))
-
 
         dot_graph = easy_tree.get_dot()
         t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
