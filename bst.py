@@ -54,8 +54,6 @@ class BinarySearchTree(object):
                 self._insert(node.right, val)
             else:
                 node.right = Node(val, parent=node)
-        else:
-            return 'Val already in tree'
 
     def depth(self):
         """return maximum depth of tree"""
@@ -64,8 +62,8 @@ class BinarySearchTree(object):
     def balance(self):
         """return integer indicating level of balance based on depth of
         each side"""
-        help = self._depth_helper
-        return help(self.root.right) - help(self.root.left)
+        helper = self._depth_helper
+        return helper(self.root.right) - helper(self.root.left)
 
     def _depth_helper(self, root, depth=0):
         if root is None:
@@ -83,16 +81,16 @@ class BinarySearchTree(object):
 
     def _find_min(self, node):
         current_node = node
-        while current_node.left:
-            current_node = current_node.left
+        while current_node.right:
+            current_node = current_node.right
         return current_node
 
     def _replace_node_in_parent(self, node, new_value=None):
         if node.parent:
-            if node == self.parent.left:
-                self.parent.left = new_value
+            if node == node.parent.left:
+                node.parent.left = new_value
             else:
-                self.parent.right = new_value
+                node.parent.right = new_value
         if new_value:
             new_value.parent = node.parent
 
@@ -114,7 +112,7 @@ class BinarySearchTree(object):
             elif node.right:
                 self._replace_node_in_parent(node, node.right)
             else:
-                self._replace_node_in_parent(node, None)
+                self._replace_node_in_parent(node)
 
     def breadth_first(self):
         queue = deque()
@@ -196,26 +194,42 @@ if __name__ == '__main__':
             # print root.val
             return root
 
-        easy_tree = BinarySearchTree(best_tree(num))
-        hard_tree = BinarySearchTree()
+        # easy_tree = BinarySearchTree()
+        # easy_tree.insert(10)
+        # easy_tree.insert(5)
+        # easy_tree.insert(15)
+        # easy_tree.insert(7)
+        # easy_tree.insert(13)
+        # easy_tree.insert(8)
+        # easy_tree.insert(12)
+        # easy_tree.insert(6)
+        # easy_tree.insert(14)
+        # easy_tree.insert(3)
+        # easy_tree.insert(19)
+        # easy_tree.insert(11)
 
-        for ints in num:
-            hard_tree.insert(ints)
+        # # easy_tree.delete(15)
+        # easy_tree.delete(13)
 
-        def hard_find():
-            '''find the highest value in the least balanced tree'''
-            return hard_tree.contains(num[-1])
+        # hard_tree = BinarySearchTree()
 
-        def easy_find():
-            '''find the highest value in the most balanced tree'''
-            return easy_tree.contains(num[-1])
+        # for ints in num:
+        #     hard_tree.insert(ints)
 
-        print(timeit.timeit('hard_find()',
-                            setup='from __main__ import hard_find'))
-        print(timeit.timeit('easy_find()',
-                            setup='from __main__ import easy_find'))
+        # def hard_find():
+        #     '''find the highest value in the least balanced tree'''
+        #     return hard_tree.contains(num[-1])
 
-        easy_tree.delete(17)
+        # def easy_find():
+        #     '''find the highest value in the most balanced tree'''
+        #     return easy_tree.contains(num[-1])
+
+        # print(timeit.timeit('hard_find()',
+        #                     setup='from __main__ import hard_find'))
+        # print(timeit.timeit('easy_find()',
+        #                     setup='from __main__ import easy_find'))
+
+
         dot_graph = easy_tree.get_dot()
         t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
         t.communicate(dot_graph)
