@@ -95,7 +95,7 @@ class BinarySearchTree(object):
             new_value.parent = node.parent
 
     def delete(self, val):
-        self.treesize.remove(val)
+        self.treesize.discard(val)
         self._delete(val, self.root)
 
     def _delete(self, val, node):

@@ -21,3 +21,4 @@
                   3. pre_order(): Starting at the root, return each value moving down. Then each moving up to the right.
                   4. post_order(): Similar to in_order, but returns the root at the end after the right branch left facing nodes.
 
+*March 9th, 2015* - Added deletion to our Search Tree. Our delete() function takes the value to be deleted, and returns None in all cases.
