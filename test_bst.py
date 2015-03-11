@@ -35,7 +35,7 @@ def test_balance():
         b.insert(n)
     assert b.balance() == 0
     b.insert(90)
-    assert b.balance() == 1
+    assert b.balance() == 0
 
 
 def test_depth():
@@ -45,7 +45,7 @@ def test_depth():
         b.insert(n)
     assert b.depth() == 4
     b.insert(90)
-    assert b.depth() == 5
+    assert b.depth() == 4
 
 
 def test_size():
@@ -62,14 +62,14 @@ def test_root():
     b = BinarySearchTree()
     for n in nodes:
         b.insert(n)
-    assert b.root.val == 5
-    assert b.root.left.val == 4
-    assert b.root.right.val == 8
+    assert b.root.val == 7
+    assert b.root.left.val == 3
+    assert b.root.right.val == 74
 
 
 def test_in_order():
     """Test the in order traversal method of a BST"""
-    assertions = [2, 3, 4, 5, 7, 8, 22, 43, 74]
+    assertions = [2, 3, 4, 5, 7, 8, 74, 43, 22]
     b = BinarySearchTree()
     for n in nodes:
         b.insert(n)
@@ -82,7 +82,7 @@ def test_in_order():
 
 def test_pre_order():
     """Test the pre order traversal method of a BST"""
-    assertions = [5, 4, 3, 2, 8, 7, 43, 22, 74]
+    assertions = [7, 3, 2, 4, 5, 74, 8, 43, 22]
     b = BinarySearchTree()
     for n in nodes:
         b.insert(n)
@@ -95,7 +95,7 @@ def test_pre_order():
 
 def test_post_order():
     """Test the post order traversal method of a BST"""
-    assertions = [2, 3, 4, 7, 22, 74, 43, 8, 5]
+    assertions = [2, 5, 4, 3, 8, 22, 43, 74, 7]
     b = BinarySearchTree()
     for n in nodes:
         b.insert(n)
@@ -108,7 +108,7 @@ def test_post_order():
 
 def test_breadth_first():
     """Test the breadth first traversal method of a BST"""
-    assertions = [5, 4, 8, 3, 7, 43, 2, 22, 74]
+    assertions = [7, 3, 74, 2, 4, 8, 43, 5, 22]
     b = BinarySearchTree()
     for n in nodes:
         b.insert(n)

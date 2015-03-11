@@ -246,10 +246,10 @@ if __name__ == '__main__':
     #     print(timeit.timeit('easy_find()',
     #                         setup='from __main__ import easy_find'))
 
-    t = BinarySearchTree()
-    for num in range(1000):
-        t.insert(num)
+    easy_tree = BinarySearchTree()
+    for i in range(20):
+        easy_tree.insert(i)
 
-    dot_graph = t.get_dot()
+    dot_graph = easy_tree.get_dot()
     t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
     t.communicate(dot_graph)
