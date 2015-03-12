@@ -42,6 +42,11 @@ class BinarySearchTree(object):
             self.root = Node(val)
         else:
             self._insert(self.root, val)
+            node_list = []
+            for i in self.treesize:
+                node_list.append(i)
+            new_tree = self.best_tree(node_list)
+            self.root = new_tree
 
     def _insert(self, node, val):
         if val < node.val:
@@ -97,24 +102,29 @@ class BinarySearchTree(object):
 
     def delete(self, val):
         self.treesize.discard(val)
-        self._delete(val, self.root)
+        # self._delete(val, self.root)
+        node_list = []
+        for i in self.treesize:
+            node_list.append(i)
+        new_tree = self.best_tree(node_list)
+        self.root = new_tree
 
-    def _delete(self, val, node):
-        if val < node.val:
-            self._delete(val, node.left)
-        elif val > node.val:
-            self._delete(val, node.right)
-        else:
-            if node.left and node.right:
-                successor = self._find_min(node.left)
-                node.val = successor.val
-                self._delete(successor.val, successor)
-            elif node.left:
-                self._replace_node_in_parent(node, node.left)
-            elif node.right:
-                self._replace_node_in_parent(node, node.right)
-            else:
-                self._replace_node_in_parent(node)
+    # def _delete(self, val, node):
+    #     if val < node.val:
+    #         self._delete(val, node.left)
+    #     elif val > node.val:
+    #         self._delete(val, node.right)
+    #     else:
+    #         if node.left and node.right:
+    #             successor = self._find_min(node.left)
+    #             node.val = successor.val
+    #             self._delete(successor.val, successor)
+    #         elif node.left:
+    #             self._replace_node_in_parent(node, node.left)
+    #         elif node.right:
+    #             self._replace_node_in_parent(node, node.right)
+    #         else:
+    #             self._replace_node_in_parent(node)
 
     def breadth_first(self):
         queue = deque()
@@ -163,6 +173,19 @@ class BinarySearchTree(object):
             yield val
         yield node.val
 
+    def best_tree(self, num):
+        num.sort()
+        return self.best_case(num, 0, len(num) - 1)
+
+    def best_case(self, num, begin, end):
+        if begin > end:
+            return None
+        mid = (begin + end) // 2
+        root = Node(num[mid])
+        root.left = self.best_case(num, begin, mid - 1)
+        root.right = self.best_case(num, mid + 1, end)
+        return root
+
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
         return "digraph G{\n%s}" % ("" if self.root.val is None else (
@@ -176,45 +199,62 @@ class BinarySearchTree(object):
 if __name__ == '__main__':
     import random
     import subprocess
-    import timeit
+    # import timeit
 
-    nums = [list(range(0, 251))]
+    # nums = [list(range(0, 20))]
 
-    for num in nums:
+    # for num in nums:
 
-        def best_tree(num):
-            '''call the recursive method to form the most balanced tree'''
-            return best_case(num, 0, len(num) - 1)
+    #     def best_tree(num):
+    #         '''call the recursive method to form the most balanced tree'''
+    #         return best_case(num, 0, len(num) - 1)
 
-        def best_case(num, begin, end):
-            if begin > end:
-                return None
-            mid = (begin + end) // 2
-            root = Node(num[mid])
-            root.left = best_case(num, begin, mid - 1)
-            root.right = best_case(num, mid + 1, end)
-            print root.val
-            return root
+    #     def best_case(num, begin, end):
+    #         if begin > end:
+    #             return None
+    #         mid = (begin + end) // 2
+    #         root = Node(num[mid])
+    #         root.left = best_case(num, begin, mid - 1)
+    #         root.right = best_case(num, mid + 1, end)
+    #         # print root.val
+    #         return root
 
-        easy_tree = BinarySearchTree(best_tree(num))
-        hard_tree = BinarySearchTree()
+    # easy_tree = BinarySearchTree()
+    # easy_tree.insert(5)
+    # easy_tree.insert(4)
+    # easy_tree.insert(8)
+    # easy_tree.insert(3)
+    # easy_tree.insert(43)
+    # easy_tree.insert(44)
+    # easy_tree.insert(127)
+    # easy_tree.insert(93)
+    # easy_tree.insert(22)
+    # easy_tree.insert(7)
+    # easy_tree.insert(74)
+    # easy_tree.insert(2)
 
-        for ints in num:
-            hard_tree.insert(ints)
+    #     hard_tree = BinarySearchTree()
 
-        def hard_find():
-            '''find the highest value in the least balanced tree'''
-            return hard_tree.contains(num[-1])
+    #     for ints in num:
+    #         hard_tree.insert(ints)
 
-        def easy_find():
-            '''find the highest value in the most balanced tree'''
-            return easy_tree.contains(num[-1])
+    #     def hard_find():
+    #         '''find the highest value in the least balanced tree'''
+    #         return hard_tree.contains(num[-1])
 
-        print(timeit.timeit('hard_find()',
-                            setup='from __main__ import hard_find'))
-        print(timeit.timeit('easy_find()',
-                            setup='from __main__ import easy_find'))
+    #     def easy_find():
+    #         '''find the highest value in the most balanced tree'''
+    #         return easy_tree.contains(num[-1])
 
-        dot_graph = hard_tree.get_dot()
-        t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
-        t.communicate(dot_graph)
+    #     print(timeit.timeit('hard_find()',
+    #                         setup='from __main__ import hard_find'))
+    #     print(timeit.timeit('easy_find()',
+    #                         setup='from __main__ import easy_find'))
+
+    easy_tree = BinarySearchTree()
+    for i in range(40):
+        easy_tree.insert(i)
+
+    dot_graph = easy_tree.get_dot()
+    t = subprocess.Popen(["dot", "-Tpng"], stdin=subprocess.PIPE)
+    t.communicate(dot_graph)
