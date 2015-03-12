@@ -22,3 +22,5 @@
                   4. post_order(): Similar to in_order, but returns the root at the end after the right branch left facing nodes.
 
 *March 9th, 2015* - Added deletion to our Search Tree. Our delete() function takes the value to be deleted, and returns None in all cases.
+
+*March 11th, 2015* - Added rebalancing of our Search Tree when nodes are inserted or deleted.
