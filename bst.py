@@ -173,6 +173,7 @@ class BinarySearchTree(object):
         yield node.val
 
     def best_tree(self, num):
+        num.sort()
         return self.best_case(num, 0, len(num) - 1)
 
     def best_case(self, num, begin, end):
@@ -217,16 +218,19 @@ if __name__ == '__main__':
     #         # print root.val
     #         return root
 
-    #     easy_tree = BinarySearchTree()
-    #     easy_tree.insert(5)
-    #     easy_tree.insert(4)
-    #     easy_tree.insert(8)
-    #     easy_tree.insert(3)
-    #     easy_tree.insert(43)
-    #     easy_tree.insert(22)
-    #     easy_tree.insert(7)
-    #     easy_tree.insert(74)
-    #     easy_tree.insert(2)
+    # easy_tree = BinarySearchTree()
+    # easy_tree.insert(5)
+    # easy_tree.insert(4)
+    # easy_tree.insert(8)
+    # easy_tree.insert(3)
+    # easy_tree.insert(43)
+    # easy_tree.insert(44)
+    # easy_tree.insert(127)
+    # easy_tree.insert(93)
+    # easy_tree.insert(22)
+    # easy_tree.insert(7)
+    # easy_tree.insert(74)
+    # easy_tree.insert(2)
 
     #     hard_tree = BinarySearchTree()
 
@@ -247,7 +251,7 @@ if __name__ == '__main__':
     #                         setup='from __main__ import easy_find'))
 
     easy_tree = BinarySearchTree()
-    for i in range(20):
+    for i in range(40):
         easy_tree.insert(i)
 
     dot_graph = easy_tree.get_dot()
