@@ -1,5 +1,6 @@
 # Data Structures 2
 ## ft. James and Nick
+Collaborators: Constantine Hatzis/Henry Howes
 
 *March 4th, 2015* - Added a Binary Search Tree data structure. The tree has nodes, and every node can have two children.
                   Each child of a node is sorted the following way: if the new node is greater than the current node,
