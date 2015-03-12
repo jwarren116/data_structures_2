@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from collections import deque
 
 
 class Node(object):
@@ -52,6 +53,8 @@ class BinarySearchTree(object):
                 self._insert(node.right, val)
             else:
                 node.right = Node(val)
+        else:
+            return 'Val already in tree'
 
     def depth(self):
         """return maximum depth of tree"""
@@ -77,6 +80,53 @@ class BinarySearchTree(object):
     def contains(self, val):
         """return True if value found in tree, False if not"""
         return val in self.treesize
+
+    def breadth_first(self):
+        queue = deque()
+        queue.append(self.root)
+        while queue:
+            node = queue.popleft()
+            yield node.val
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+    def in_order(self):
+        return self._in_order(self.root)
+
+    def _in_order(self, node):
+        if not node:
+            return
+        for val in self._in_order(node.left):
+            yield val
+        yield node.val
+        for val in self._in_order(node.right):
+            yield val
+
+    def pre_order(self):
+        return self._pre_order(self.root)
+
+    def _pre_order(self, node):
+        if not node:
+            return
+        yield node.val
+        for val in self._pre_order(node.left):
+            yield val
+        for val in self._pre_order(node.right):
+            yield val
+
+    def post_order(self):
+        return self._post_order(self.root)
+
+    def _post_order(self, node):
+        if not node:
+            return
+        for val in self._post_order(node.left):
+            yield val
+        for val in self._post_order(node.right):
+            yield val
+        yield node.val
 
     def get_dot(self):
         """return the tree with root 'self' as a dot graph for visualization"""
