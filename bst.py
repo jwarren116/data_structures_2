@@ -3,10 +3,11 @@ from collections import deque
 
 
 class Node(object):
-    def __init__(self, value, left=None, right=None):
+    def __init__(self, value, left=None, right=None, parent=None):
         self.val = value
-        self.left = None
-        self.right = None
+        self.left = left
+        self.right = right
+        self.parent = parent
 
     def _get_dot(self):
         """recursively prepare a dot graph entry for this node."""
@@ -47,14 +48,12 @@ class BinarySearchTree(object):
             if node.left:
                 self._insert(node.left, val)
             else:
-                node.left = Node(val)
+                node.left = Node(val, parent=node)
         elif val > node.val:
             if node.right:
                 self._insert(node.right, val)
             else:
-                node.right = Node(val)
-        else:
-            return 'Val already in tree'
+                node.right = Node(val, parent=node)
 
     def depth(self):
         """return maximum depth of tree"""
@@ -80,6 +79,42 @@ class BinarySearchTree(object):
     def contains(self, val):
         """return True if value found in tree, False if not"""
         return val in self.treesize
+
+    def _find_min(self, node):
+        current_node = node
+        while current_node.right:
+            current_node = current_node.right
+        return current_node
+
+    def _replace_node_in_parent(self, node, new_value=None):
+        if node.parent:
+            if node == node.parent.left:
+                node.parent.left = new_value
+            else:
+                node.parent.right = new_value
+        if new_value:
+            new_value.parent = node.parent
+
+    def delete(self, val):
+        self.treesize.discard(val)
+        self._delete(val, self.root)
+
+    def _delete(self, val, node):
+        if val < node.val:
+            self._delete(val, node.left)
+        elif val > node.val:
+            self._delete(val, node.right)
+        else:
+            if node.left and node.right:
+                successor = self._find_min(node.left)
+                node.val = successor.val
+                self._delete(successor.val, successor)
+            elif node.left:
+                self._replace_node_in_parent(node, node.left)
+            elif node.right:
+                self._replace_node_in_parent(node, node.right)
+            else:
+                self._replace_node_in_parent(node)
 
     def breadth_first(self):
         queue = deque()
