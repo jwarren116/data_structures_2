@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+
 def insert_sort(my_list):
     """basic insert sort function
     Takes a list of strings or integers and sorts in place, returns None"""
