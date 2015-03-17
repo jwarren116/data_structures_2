@@ -12,9 +12,12 @@ class HashTable(object):
 
     def hash(self, key):
         hash_val = 0
-        for char in key:
-            hash_val += ord(char)
-        return hash_val % len(self.table)
+        try:
+            for char in key:
+                hash_val += ord(char)
+            return hash_val % len(self.table)
+        except:
+            raise AttributeError('Please input a valid string')
 
     def get(self, key):
         hashed_key = self.hash(key)
@@ -22,11 +25,17 @@ class HashTable(object):
             if i[0] == key:
                 return i[1]
         else:
-            raise IndexError('Key not in bucket')
+            raise KeyError('Key not in bucket')
 
     def set(self, key, val):
         hashed_key = self.hash(key)
-        self.table[hashed_key].append((key, val))
+        for index, _tuple in enumerate(self.table[hashed_key]):
+            if _tuple[0] == key:
+                self.table[hashed_key][index] = (key, val)
+                return
+            else:
+                self.table[hashed_key].append((key, val))
+
 
 # if __name__ == '__main__':
 #     import io
