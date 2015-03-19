@@ -3,7 +3,7 @@
 
 
 def merge_sort(lyst):
-    buf = [len(lyst)]
+    buf = [None for x in range(len(lyst))]
     _merge_sort(lyst, buf, 0, len(lyst)-1)
 
 
@@ -19,7 +19,7 @@ def merge(lyst, buf, low, middle, high):
     i1 = low
     i2 = middle + 1
 
-    for i in range(low, high):
+    for i in range(low, high+1):
         if i1 > middle:
             buf[i] = lyst[i2]
             i2 += 1
@@ -32,5 +32,5 @@ def merge(lyst, buf, low, middle, high):
         else:
             buf[i] = lyst[i2]
             i2 += 1
-    for i in range(low, high):
+    for i in range(low, high+1):
         lyst[i] = buf[i]
