@@ -1,23 +1,20 @@
-# def quick_sort(my_list):
-#     _quick_sort(my_list, 0, len(my_list) - 1)
-
-# def _quick_sort(my_list, left, right):
+def quick_sort(my_list):
+    _quick_sort(my_list, 0, len(my_list) - 1)
 
 
-def quick_sort_no_help(my_list):
+def _quick_sort(my_list, left, right):
     if len(my_list) <= 1:
-        return my_list
-    pivot = _pivot_picker(my_list)
+        pivot = _pivot_picker(my_list, left, right)
+        _quick_sort(my_list, pivot + 1, right)
+        _quick_sort(my_list, left, pivot - 1)
 
 
-def _pivot_picker(my_list):
-    left = my_list[0]
-    mid = my_list[len(my_list) // 2]
-    right = my_list[-1]
+def _pivot_picker(lst, left, right):
+    mid = len(lst) // 2
 
-    if left <= mid <= right or left >= mid >= right:
+    if lst[left] <= lst[mid] <= lst[right] or lst[left] >= lst[mid] >= lst[right]:
         return mid
-    elif mid <= left <= right or mid >= left >= right:
+    elif lst[mid] <= lst[left] <= lst[right] or lst[mid] >= lst[left] >= lst[right]:
         return left
     else:
         return right
@@ -36,8 +33,3 @@ if __name__ == '__main__':
     print _pivot_picker(ml4)
     print _pivot_picker(ml5)
     print _pivot_picker(ml6)
-
-
-
-
-
