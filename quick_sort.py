@@ -37,10 +37,13 @@ def _pivot_picker(lst, left, right):
 
 if __name__ == '__main__':
     import timeit
+    import random
 
     best_list = [i for i in range(1000)]
     worst_list = [i for i in range(999)]
     worst_list.insert(0, 1000)
+    tim_list = [i for i in range(1000)]
+    random.shuffle(tim_list)
 
     def best_case():
         return quick_sort(best_list)
@@ -59,8 +62,8 @@ if __name__ == '__main__':
                                         number=100)
                                         )
 
-    print "Timsort! {}: {}\nWhoa...".format(len(worst_list),
-                                        timeit.timeit('worst_list.sort()',
-                                        setup='from __main__ import worst_list',
-                                        number=100)
-                                        )
+    print "Timsort! {}: {}\nWhoa...".format(len(tim_list),
+                                            timeit.timeit('tim_list.sort()',
+                                            setup='from __main__ import tim_list',
+                                            number=100)
+                                            )
