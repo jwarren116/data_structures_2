@@ -57,12 +57,13 @@ if __name__ == '__main__':
                                        setup='from __main__ import best_case',
                                        number=100)
                                        )
+
     print "Worst case of {}: {}".format(len(worst_list),
                                         timeit.timeit('worst_case()',
                                         setup='from __main__ import worst_case',
                                         number=100)
                                         )
-    print tim_list
+
     print "Timsort! {}: {}\nWhoa...".format(len(tim_list),
                                             timeit.timeit('tim_list.sort()',
                                             setup='from __main__ import tim_list',
